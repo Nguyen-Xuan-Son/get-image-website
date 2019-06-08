@@ -1,1 +1,13 @@
-search.css
+.content-center {
+	display: flex;
+	justify-content: center;
+	margin: 20px;
+}
+
+.content-center button {
+	margin: 5px;
+}
+
+.content-center div button {
+	margin-top: 28px;
+}

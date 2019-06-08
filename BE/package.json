@@ -1,9 +1,17 @@
 {
   "name": "get-image-from-website",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "main.js",
   "license": "MIT",
+  "scripts": {
+    "start": "nodemon main.js"
+  },
   "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
     "puppeteer": "^1.17.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.1"
   }
 }
