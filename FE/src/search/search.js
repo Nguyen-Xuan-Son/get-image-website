@@ -9,66 +9,84 @@ import './search.css';
 class Search extends React.Component {
 
 	constructor(props) {
-    	super(props);
-    	this.state = {
-      		error: null,
-      		isLoaded: false,
-      		items: []
-    	};
-    	this.callApiGetImages = this.callApiGetImages.bind(this);
-  	}
-
-	callApiGetImages() {
-		fetch(`http://localhost:4000/api/getImageWebsite`,
-    {
-   method: 'post',
-   headers: {'Content-Type':'application/json'},
-   body: {
-    "first_name": 'this.firstName.value'
-   }
-  }
-      ).then(res => res.json()).then((result) => {
-          		this.setState({
-            		isLoaded: true,
-            		items: result.items
-          		});
-    		}, (error) => {
-          		this.setState({
-            		isLoaded: true,
-            		error
-          		})
-          	}
-  		);
-  		console.log(this.state);
+		super(props);
+		this.state = {
+			imageWebsite: '',
+			error: null,
+			isLoaded: false,
+			URLSearch: '',
+			items: []
+		};
+		this.callApiGetImages = this.callApiGetImages.bind(this);
+		this.onHandleChange = this.onHandleChange.bind(this);
+		this.returnImg = this.returnImg.bind(this);
 	}
 
-  	render() {
+	callApiGetImages(URLSearch) {
+		fetch(`http://localhost:4000/api/get-image-website`,
+			{
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({URLSearch})
+			}
+		).then(res => res.json()).then(result => {
+			this.setState({
+				isLoaded: true,
+				imageWebsite: result.mes,
+				items: result.items
+			});
+			this.props.getImgs(result);
+		}, error => {
+			this.setState({
+				isLoaded: true,
+				error
+			})
+		});
+	}
+
+	onHandleChange($event) {
+		const target = $event.target;
+		const value = target.value;
+		const name = target.name;
+		this.setState({
+			[name]: value
+		});
+	}
+
+	returnImg() {
+		return <div><img alt="abc" src={this.state.imageWebsite} /></div>
+	}
+
+	render() {
 		return (
 			<div>
 				<div className="content-center">
-			    	<div>
-			    		<FormControl>
-	  						<InputLabel>URL search</InputLabel>
-	  						<Input/>
-	  						<FormHelperText>Enter URL get images from website, .pdf website and image website.</FormHelperText>
+					<div>
+						<FormControl>
+							<InputLabel>URL search</InputLabel>
+							<Input name="URLSearch" onChange={this.onHandleChange}/>
+							<FormHelperText>Enter URL get images from website, .pdf website and image website.</FormHelperText>
 						</FormControl>
-						<Button onClick={this.callApiGetImages} variant="contained" color="primary">
-        					Get data
+						<Button onClick={() => this.callApiGetImages(this.state.URLSearch)} variant="contained" color="primary">
+							Get data
       					</Button>
-			    	</div>
-		    	</div>
-		    	<div className="content-center">
-      				<Button variant="contained" color="secondary">
-        				Download PDF website
+					</div>
+				</div>
+				<div className="content-center">
+					<Button variant="contained" color="secondary">
+						Download PDF website
       				</Button>
-      				<Button variant="contained">
-        				Default image website
+					<Button variant="contained">
+						Default image website
       				</Button>
-		    	</div>
+				</div>
+				<div>{this.state.imageWebsite}</div>
+				{this.returnImg()}
 			</div>
-		    
-	  	);
-  	}
+		);
+	}
 }
 
 export default Search;
