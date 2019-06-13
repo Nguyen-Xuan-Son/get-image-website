@@ -12,7 +12,6 @@ class App extends React.Component {
   }
 
   getUrlImgs(imgs) {
-    console.log('imgs', imgs);
     this.setState({
       imgs: imgs.urlImgs
     })

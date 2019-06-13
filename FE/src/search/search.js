@@ -19,7 +19,6 @@ class Search extends React.Component {
 		};
 		this.callApiGetImages = this.callApiGetImages.bind(this);
 		this.onHandleChange = this.onHandleChange.bind(this);
-		this.returnImg = this.returnImg.bind(this);
 	}
 
 	callApiGetImages(URLSearch) {
@@ -55,10 +54,6 @@ class Search extends React.Component {
 		});
 	}
 
-	returnImg() {
-		return <div><img alt="abc" src={this.state.imageWebsite} /></div>
-	}
-
 	render() {
 		return (
 			<div>
@@ -83,7 +78,6 @@ class Search extends React.Component {
       				</Button>
 				</div>
 				<div>{this.state.imageWebsite}</div>
-				{this.returnImg()}
 			</div>
 		);
 	}

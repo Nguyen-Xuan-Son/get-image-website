@@ -1,23 +1,9 @@
-// const puppeteer = require('puppeteer');
+const puppeteer = require('puppeteer');
 
 const getImageWebsite = (req, res) => {
 	const { URLSearch } = req.body;
 
-	// (async () => {
-	// 	const browser = await puppeteer.launch();
-	// 	const page = await browser.newPage();
-	// 	await page.goto(URLSearch);
-	// 	await page.screenshot({ path: __dirname + '\\example.png' });
-	// 	// Get path URL.
-	// 	res.json({mes: 'http://127.0.0.1:8887/example.png'});
-	// 	await browser.close();
-	// })();
-
-
-	const puppeteer = require('puppeteer');
-
 	(async () => {
-
 		const browser = await puppeteer.launch();
 		const page = await browser.newPage();
 		await page.goto(URLSearch);
