@@ -3,7 +3,8 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Input from '@material-ui/core/Input';
 import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
-import Button from '@material-ui/core/Button';
+import {Button, Checkbox, FormControlLabel } from '@material-ui/core';
+
 import './search.css';
 
 class Search extends React.Component {
@@ -13,22 +14,25 @@ class Search extends React.Component {
 		this.state = {
 			imageWebsite: '',
 			error: null,
+			formatImage: ["png", "jpg", "jpeg", "gif"],
 			isLoaded: false,
 			URLSearch: '',
+			formatsImage: [],
 			items: []
 		};
 		this.callApiGetImages = this.callApiGetImages.bind(this);
 		this.onHandleChange = this.onHandleChange.bind(this);
+		this.handleChange = this.handleChange.bind(this);
 	}
 
-	callApiGetImages(URLSearch) {
+	callApiGetImages(URLSearch, formatsImage) {
 		fetch(`http://localhost:4000/api/get-image-website`,
 			{
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json'
 				},
-				body: JSON.stringify({URLSearch})
+				body: JSON.stringify({URLSearch, formatsImage})
 			}
 		).then(res => res.json()).then(result => {
 			this.setState({
@@ -54,7 +58,32 @@ class Search extends React.Component {
 		});
 	}
 
+	handleChange(e) {
+		const tempsFormat = this.state.formatsImage;
+
+		tempsFormat.push(e.target.value);
+
+		this.setState({
+			formatsImage: tempsFormat
+		})
+	}
+
 	render() {
+
+		const checkboxsSelectFormatImage = this.state.formatImage.map((format, index) => {
+            return (
+                <FormControlLabel
+                    key={index}
+                    value={format}
+                    control={
+                        <Checkbox color="primary" onChange={this.handleChange}/>
+                    }
+                    label={"Get " + format + " image"}
+                    labelPlacement="end"
+                />
+            );
+        })
+
 		return (
 			<div>
 				<div className="content-center">
@@ -64,10 +93,13 @@ class Search extends React.Component {
 							<Input name="URLSearch" onChange={this.onHandleChange}/>
 							<FormHelperText>Enter URL get images from website, .pdf website and image website.</FormHelperText>
 						</FormControl>
-						<Button onClick={() => this.callApiGetImages(this.state.URLSearch)} variant="contained" color="primary">
+						<Button onClick={() => this.callApiGetImages(this.state.URLSearch, this.state.formatsImage)} variant="contained" color="primary">
 							Get data
       					</Button>
 					</div>
+				</div>
+				<div className="option-format-container">
+					{checkboxsSelectFormatImage}
 				</div>
 				<div className="content-center">
 					<Button variant="contained" color="secondary">
@@ -78,6 +110,7 @@ class Search extends React.Component {
       				</Button>
 				</div>
 				<div>{this.state.imageWebsite}</div>
+				<hr />
 			</div>
 		);
 	}

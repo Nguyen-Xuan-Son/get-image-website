@@ -1,0 +1,13 @@
+{
+    "name": "get-image-application",
+    "version": "1.0.0",
+    "main": "server.js",
+    "license": "MIT",
+    "scripts": {
+        "develop-install": "concurrently --kill-others-on-fail \"cd FE && yarn install\" \"cd BE && yarn install\"",
+        "develop-start": "concurrently --kill-others-on-fail \"cd FE && yarn start\" \"cd BE && yarn develop-start\""
+    },
+    "devDependencies": {
+        "concurrently": "^4.1.0"
+    }
+}

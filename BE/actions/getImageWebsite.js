@@ -1,8 +1,7 @@
 const puppeteer = require('puppeteer');
 
 const getImageWebsite = (req, res) => {
-	const { URLSearch } = req.body;
-
+	var { URLSearch, formatsImage } = req.body;
 	(async () => {
 		const browser = await puppeteer.launch();
 		const page = await browser.newPage();
@@ -14,7 +13,20 @@ const getImageWebsite = (req, res) => {
 			let urlImgs = imgs.map(img => img.getAttribute('src'));
 			return urlImgs;
 		});
-		res.json({urlImgs: articles});
+
+		let imgRes = [];
+
+		if (formatsImage && formatsImage.length) {
+			formatsImage.forEach(format => {
+				articles.forEach(image => {
+					if (image.substring(image.length - 3, image.length) === format) {
+						imgRes.push(image);
+					}
+				});
+			});
+		}
+
+		res.json({urlImgs: imgRes});
 		await browser.close();
 	})();
 };
