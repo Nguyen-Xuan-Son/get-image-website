@@ -7,6 +7,7 @@ const getImageWebsite = (req, res) => {
 		const page = await browser.newPage();
 		await page.goto(URLSearch);
 
+		// Get images
 		const articles = await page.evaluate(() => {
 			let imgs = document.querySelectorAll('img');
 			imgs = [...imgs];
@@ -16,6 +17,7 @@ const getImageWebsite = (req, res) => {
 
 		let imgRes = [];
 
+		// Check condition
 		if (formatsImage && formatsImage.length) {
 			formatsImage.forEach(format => {
 				articles.forEach(image => {
@@ -24,8 +26,11 @@ const getImageWebsite = (req, res) => {
 					}
 				});
 			});
+		} else {
+			imgRes.push(...articles);
 		}
 
+		// Return data
 		res.json({urlImgs: imgRes});
 		await browser.close();
 	})();

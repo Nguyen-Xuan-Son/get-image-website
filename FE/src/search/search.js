@@ -61,7 +61,13 @@ class Search extends React.Component {
 	handleChange(e) {
 		const tempsFormat = this.state.formatsImage;
 
-		tempsFormat.push(e.target.value);
+		if (this.state.formatsImage.length && e.target.checked) {
+			tempsFormat.push(e.target.value);
+		} else if (!this.state.formatsImage.length && e.target.checked) {
+			tempsFormat.push(e.target.value);
+		} else if (!e.target.checked && tempsFormat.indexOf(e.target.value) !== -1 ) {
+			tempsFormat.splice(tempsFormat.indexOf(e.target.value), 1);
+		}
 
 		this.setState({
 			formatsImage: tempsFormat
